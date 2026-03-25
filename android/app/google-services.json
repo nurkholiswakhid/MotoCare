@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "516451377145",
+    "project_id": "flutter-service-schedule",
+    "storage_bucket": "flutter-service-schedule.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516451377145:android:bbfadd75df17e3554da728",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwJVn7Hfh8PFTAphClbCJAtpS2TB0JiyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
