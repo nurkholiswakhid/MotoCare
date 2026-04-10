@@ -48,18 +48,18 @@ class ScheduleStatusCard extends StatelessWidget {
     final progress = (kmDriven / totalInterval).clamp(0.0, 1.0);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: statusColor.withOpacity(0.08),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
           ),
         ],
-        border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1),
+        border: Border.all(color: statusColor.withOpacity(0.2), width: 1),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
@@ -98,11 +98,7 @@ class ScheduleStatusCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [gradientStart.withOpacity(0.15), gradientEnd.withOpacity(0.05)],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
+                          color: statusColor.withOpacity(0.1),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(statusIcon, color: statusColor, size: 28),
@@ -190,38 +186,19 @@ class ScheduleStatusCard extends StatelessWidget {
                                           ],
                                         ),
                                         const SizedBox(height: 4),
-                                        Stack(
-                                          children: [
-                                            Container(
-                                              height: 6,
-                                              width: double.infinity,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[200],
-                                                borderRadius: BorderRadius.circular(3),
-                                              ),
-                                            ),
-                                            LayoutBuilder(
-                                              builder: (context, constraints) {
-                                                return Container(
-                                                  height: 6,
-                                                  width: constraints.maxWidth * progress,
-                                                  decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      colors: [gradientStart, gradientEnd],
-                                                    ),
-                                                    borderRadius: BorderRadius.circular(3),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: statusColor.withOpacity(0.4),
-                                                        blurRadius: 4,
-                                                        offset: const Offset(0, 2),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ],
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            4,
+                                          ),
+                                          child: LinearProgressIndicator(
+                                            value: progress,
+                                            minHeight: 6,
+                                            backgroundColor: Colors.grey[200],
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                  statusColor,
+                                                ),
+                                          ),
                                         ),
                                       ],
                                     ),

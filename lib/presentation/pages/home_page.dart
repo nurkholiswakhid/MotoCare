@@ -209,151 +209,147 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildVehiclesList(BuildContext context, AuthViewModel authVM, VehicleViewModel vehicleVM) {
+  Widget _buildVehiclesList(BuildContext context, AuthViewModel authVM,
+      VehicleViewModel vehicleVM) {
     return RefreshIndicator(
       onRefresh: () => vehicleVM.loadVehicles(authVM.currentUser!.id),
       child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: const EdgeInsets.all(16),
         children: [
-          _buildHeader(context, authVM),
-          const SizedBox(height: 24),
-          _buildQuickActions(context),
-          const SizedBox(height: 32),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Kendaraan Anda',
-                  style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w700),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const VehicleListPage())),
-                  child: Text(
-                    'Lihat Semua',
-                    style: GoogleFonts.poppins(color: AppColors.primary, fontWeight: FontWeight.w600),
-                  ),
+          // Premium Welcome Card with Rich Gradient
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: const [0.0, 0.6, 1.0],
+                colors: [
+                  AppColors.primary,
+                  AppColors.primaryLight,
+                  AppColors.accent,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.3),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: 190,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: vehicleVM.vehicles.length,
-              itemBuilder: (context, index) {
-                final vehicle = vehicleVM.vehicles[index];
-                return Container(
-                  width: 280,
-                  margin: const EdgeInsets.only(right: 16),
-                  child: VehicleCard(
-                    vehicle: vehicle,
-                    onTap: () {
-                      vehicleVM.selectVehicle(vehicle);
-                    },
-                    onDelete: () {
-                      _showDeleteConfirmation(context, vehicle.name, () {
-                        vehicleVM.deleteVehicle(authVM.currentUser!.id, vehicle.id);
-                        Navigator.pop(context);
-                      });
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context, AuthViewModel authVM) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: AppColors.primary.withOpacity(0.1),
-            child: Text(
-              authVM.currentUser!.name[0].toUpperCase(),
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
+            padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Selamat Pagi,',
+                  'Selamat Datang!',
                   style: GoogleFonts.poppins(
                     fontSize: 14,
-                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white.withOpacity(0.8),
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   authVM.currentUser!.name,
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
+                    fontSize: 24,
                     fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.directions_car,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${vehicleVM.vehicles.length} Kendaraan',
+                        style: GoogleFonts.poppins(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: AppColors.primary),
-            onPressed: () {},
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickActions(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildActionItem(context, Icons.directions_car, 'Tambah', () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => const VehicleListPage()));
-          }),
-          _buildActionItem(context, Icons.build, 'Bengkel', () {}),
-          _buildActionItem(context, Icons.assessment, 'Laporan', () {}),
-          _buildActionItem(context, Icons.headset_mic, 'Bantuan', () {}),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionItem(BuildContext context, IconData icon, String label, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(icon, color: AppColors.primary, size: 28),
-          ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 28),
           Text(
-            label,
-            style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600),
+            'Kendaraan Anda',
+            style: GoogleFonts.poppins(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...vehicleVM.vehicles.map(
+            (vehicle) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: VehicleCard(
+                vehicle: vehicle,
+                onTap: () {
+                  vehicleVM.selectVehicle(vehicle);
+                },
+                onDelete: () {
+                  _showDeleteConfirmation(
+                    context,
+                    vehicle.name,
+                    () {
+                      vehicleVM.deleteVehicle(
+                        authVM.currentUser!.id,
+                        vehicle.id,
+                      );
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const VehicleListPage(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              icon: const Icon(Icons.add),
+              label: Text(
+                'Tambah Kendaraan Baru',
+                style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+              ),
+            ),
           ),
         ],
       ),

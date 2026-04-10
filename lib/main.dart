@@ -20,22 +20,18 @@ import 'core/repositories/service_history_repository.dart';
 class AppColors {
   static const Color primary = Color(0xFF006B8C); // Deep Teal
   static const Color primaryLight = Color(0xFF00A8CC); // Bright Teal
-  static const Color primaryDark = Color(0xFF004D66); // Dark Teal
   static const Color accent = Color(0xFFFF6B35); // Vibrant Orange
   static const Color accentLight = Color(0xFFFFD700); // Golden Yellow
-  static const Color background = Color(0xFFF7F9FC); // Light Blue-Gray
+  static const Color background = Color(0xFFEBF4F7); // Light Blue-Gray
   static const Color surface = Color(0xFFFFFFFF); // White
   static const Color success = Color(0xFF16A34A); // Green
   static const Color error = Color(0xFFDC2626); // Red
-  static const Color textPrimary = Color(0xFF1A2B33); // Dark Grayish Blue
-  static const Color textSecondary = Color(0xFF64748B); // Slate Gray
 }
 
 // Modern Theme Configuration
 ThemeData buildModernTheme() {
   return ThemeData(
     useMaterial3: true,
-    scaffoldBackgroundColor: AppColors.background,
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
       secondary: AppColors.accent,
@@ -44,23 +40,7 @@ ThemeData buildModernTheme() {
       surface: AppColors.surface,
       error: AppColors.error,
     ),
-    textTheme: GoogleFonts.poppinsTextTheme().copyWith(
-      displayLarge: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-      displayMedium: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-      displaySmall: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-      headlineLarge: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-      headlineMedium: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-      headlineSmall: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-      titleLarge: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-      titleMedium: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w500),
-      titleSmall: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w500),
-      bodyLarge: GoogleFonts.poppins(color: AppColors.textPrimary),
-      bodyMedium: GoogleFonts.poppins(color: AppColors.textPrimary),
-      bodySmall: GoogleFonts.poppins(color: AppColors.textSecondary),
-      labelLarge: GoogleFonts.poppins(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-      labelMedium: GoogleFonts.poppins(color: AppColors.textSecondary, fontWeight: FontWeight.w500),
-      labelSmall: GoogleFonts.poppins(color: AppColors.textSecondary, fontWeight: FontWeight.w400),
-    ),
+    textTheme: GoogleFonts.poppinsTextTheme(),
     appBarTheme: AppBarTheme(
       elevation: 0,
       backgroundColor: Colors.transparent, // allow gradient backgrounds if needed
@@ -68,7 +48,7 @@ ThemeData buildModernTheme() {
       centerTitle: true,
       titleTextStyle: GoogleFonts.poppins(
         fontSize: 20,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         color: AppColors.primary,
       ),
       iconTheme: const IconThemeData(color: AppColors.primary),
@@ -78,7 +58,7 @@ ThemeData buildModernTheme() {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         elevation: 8,
-        shadowColor: AppColors.primary.withOpacity(0.4),
+        shadowColor: AppColors.primary.withOpacity(0.5),
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         textStyle: GoogleFonts.poppins(
@@ -118,48 +98,44 @@ ThemeData buildModernTheme() {
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Color(0xFFE2E8F0)), // Slate 200
+        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Color(0xFFE2E8F0)),
+        borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        borderSide: const BorderSide(color: AppColors.primaryLight, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: AppColors.error, width: 1.5),
       ),
-      prefixIconColor: AppColors.textSecondary,
+      prefixIconColor: AppColors.primary,
       labelStyle: GoogleFonts.poppins(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: AppColors.textSecondary,
+        color: AppColors.primary,
       ),
       hintStyle: GoogleFonts.poppins(
         fontSize: 14,
-        color: AppColors.textSecondary.withOpacity(0.7),
+        color: Colors.grey[400],
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: AppColors.accent,
+      backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
-      elevation: 6,
-      splashColor: AppColors.primaryLight.withOpacity(0.2),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      elevation: 8,
+      splashColor: AppColors.accent.withOpacity(0.2),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
     ),
     cardTheme: CardThemeData(
-      elevation: 6,
-      shadowColor: Colors.black.withOpacity(0.06),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      elevation: 8,
+      shadowColor: Colors.black.withOpacity(0.08),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       color: Colors.white,
       margin: EdgeInsets.zero,
-    ),
-    dialogTheme: DialogThemeData(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      elevation: 16,
     ),
   );
 }

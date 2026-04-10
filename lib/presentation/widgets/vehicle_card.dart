@@ -20,18 +20,18 @@ class VehicleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
           ),
         ],
-        border: Border.all(color: Colors.grey.withOpacity(0.08), width: 1),
+        border: Border.all(color: AppColors.primary.withOpacity(0.1), width: 1),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
@@ -39,25 +39,18 @@ class VehicleCard extends StatelessWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
-            splashColor: AppColors.primaryLight.withOpacity(0.1),
-            highlightColor: AppColors.primaryLight.withOpacity(0.05),
             child: Stack(
               children: [
-                // Minimal modern background accent
+                // Premium background accent
                 Positioned(
-                  right: -30,
-                  top: -30,
+                  right: -20,
+                  top: -20,
                   child: Container(
-                    width: 120,
-                    height: 120,
+                    width: 100,
+                    height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          AppColors.primaryLight.withOpacity(0.15),
-                          AppColors.primaryLight.withOpacity(0.0),
-                        ],
-                      ),
+                      color: AppColors.primaryLight.withOpacity(0.1),
                     ),
                   ),
                 ),
@@ -66,16 +59,12 @@ class VehicleCard extends StatelessWidget {
                   top: 0,
                   bottom: 0,
                   child: Container(
-                    width: 5,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [AppColors.primaryLight, AppColors.primary],
-                      ),
+                    width: 6,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        bottomLeft: Radius.circular(24),
+                        topLeft: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
                       ),
                     ),
                   ),

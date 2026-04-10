@@ -7,7 +7,6 @@ import '../../core/entities/vehicle.dart';
 import '../../presentation/viewmodels/auth_viewmodel.dart';
 import '../../presentation/viewmodels/vehicle_viewmodel.dart';
 import '../../presentation/pages/vehicle_detail_page.dart';
-import '../../core/services/ocr_service.dart';
 import '../../main.dart';
 
 class VehicleListPage extends StatefulWidget {
@@ -116,137 +115,118 @@ class _VehicleListPageState extends State<VehicleListPage> {
     AuthViewModel authVM,
     VehicleViewModel vehicleVM,
   ) {
-    return GridView.builder(
+    return ListView.builder(
       padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-        childAspectRatio: 0.85,
-      ),
       itemCount: vehicleVM.vehicles.length,
       itemBuilder: (context, index) {
         final vehicle = vehicleVM.vehicles[index];
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                AppColors.primary,
-                AppColors.primaryDark,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.08),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
               ],
             ),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.primary.withOpacity(0.3),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              // Decorative shapes for the grid card
-              Positioned(
-                right: -20,
-                top: -20,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.1),
+            child: InkWell(
+              onTap: () {
+                vehicleVM.selectVehicle(vehicle);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VehicleDetailPage(vehicle: vehicle),
                   ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  vehicleVM.selectVehicle(vehicle);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => VehicleDetailPage(vehicle: vehicle),
+                );
+              },
+              borderRadius: BorderRadius.circular(16),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primary,
+                            AppColors.primaryLight,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.directions_car,
+                        color: Colors.white,
+                      ),
                     ),
-                  );
-                },
-                borderRadius: BorderRadius.circular(24),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(12),
+                          Text(
+                            vehicle.name,
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
                             ),
-                            child: const Icon(Icons.directions_car, color: Colors.white),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          PopupMenuButton(
-                            icon: const Icon(Icons.more_vert, color: Colors.white),
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                child: const Text('Edit'),
-                                onTap: () => Future.delayed(
-                                  const Duration(milliseconds: 100),
-                                  () => _showEditVehicleDialog(
-                                    context,
-                                    vehicle,
-                                    context.read<AuthViewModel>(),
-                                    context.read<VehicleViewModel>(),
-                                  ),
-                                ),
-                              ),
-                              PopupMenuItem(
-                                child: const Text(
-                                  'Hapus',
-                                  style: TextStyle(color: Colors.red),
-                                ),
-                                onTap: () => Future.delayed(
-                                  const Duration(milliseconds: 100),
-                                  () => _showDeleteConfirmation(
-                                    context,
-                                    vehicle,
-                                    context.read<AuthViewModel>(),
-                                    context.read<VehicleViewModel>(),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          const SizedBox(height: 4),
+                          Text(
+                            vehicle.plateNumber,
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.grey[600],
+                            ),
                           ),
                         ],
                       ),
-                      const Spacer(),
-                      Text(
-                        vehicle.name,
-                        style: GoogleFonts.poppins(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                    ),
+                    PopupMenuButton(
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: const Text('Edit'),
+                          onTap: () => Future.delayed(
+                            const Duration(milliseconds: 100),
+                            () => _showEditVehicleDialog(
+                              context,
+                              vehicle,
+                              context.read<AuthViewModel>(),
+                              context.read<VehicleViewModel>(),
+                            ),
+                          ),
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        vehicle.plateNumber,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white.withOpacity(0.8),
+                        PopupMenuItem(
+                          child: const Text(
+                            'Hapus',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onTap: () => Future.delayed(
+                            const Duration(milliseconds: 100),
+                            () => _showDeleteConfirmation(
+                              context,
+                              vehicle,
+                              context.read<AuthViewModel>(),
+                              context.read<VehicleViewModel>(),
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         );
       },
@@ -293,21 +273,9 @@ class _VehicleListPageState extends State<VehicleListPage> {
               const SizedBox(height: 16),
               TextField(
                 controller: kmController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'KM Saat Ini',
-                  prefixIcon: const Icon(Icons.speed),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.camera_alt_outlined, color: AppColors.primary),
-                    tooltip: 'Scan Odometer',
-                    onPressed: () async {
-                      final ocr = OCRService();
-                      final text = await ocr.scanOdometerFromCamera();
-                      if (text != null && text.isNotEmpty) {
-                        kmController.text = text;
-                      }
-                      ocr.dispose();
-                    },
-                  ),
+                  prefixIcon: Icon(Icons.speed),
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -422,21 +390,9 @@ class _VehicleListPageState extends State<VehicleListPage> {
               const SizedBox(height: 16),
               TextField(
                 controller: kmController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'KM Saat Ini',
-                  prefixIcon: const Icon(Icons.speed),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.camera_alt_outlined, color: AppColors.primary),
-                    tooltip: 'Scan Odometer',
-                    onPressed: () async {
-                      final ocr = OCRService();
-                      final text = await ocr.scanOdometerFromCamera();
-                      if (text != null && text.isNotEmpty) {
-                        kmController.text = text;
-                      }
-                      ocr.dispose();
-                    },
-                  ),
+                  prefixIcon: Icon(Icons.speed),
                 ),
                 keyboardType: TextInputType.number,
               ),
